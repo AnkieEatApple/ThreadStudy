@@ -26,7 +26,7 @@ public class BasicThreadPool extends Thread implements ThreadPool {
 	private final int coreSize;
 
 	// 当前活跃的线程数量
-	private int activiteCount;
+	private int activeCount;
 
 	// 创建线程所需要的工厂
 	private final ThreadFactory threadFactory;
@@ -111,7 +111,7 @@ public class BasicThreadPool extends Thread implements ThreadPool {
 		if (isShutdown) {
 			throw new IllegalStateException("The thread pool is destory");
 		}
-		return 0;
+		return this.coreSize;
 	}
 
 	@Override
@@ -125,7 +125,7 @@ public class BasicThreadPool extends Thread implements ThreadPool {
 	@Override
 	public int getActivityCount() {
 		synchronized (this) {
-			return this.activiteCount;
+			return this.activeCount;
 		}
 	}
 
@@ -149,7 +149,7 @@ public class BasicThreadPool extends Thread implements ThreadPool {
 		final ThreadTask threadTask = new ThreadTask(thread, internalTask);
 
 		threadQueue.offer(threadTask);
-		this.activiteCount++;
+		this.activeCount++;
 		thread.start();
 	}
 
@@ -157,7 +157,7 @@ public class BasicThreadPool extends Thread implements ThreadPool {
 		// 从线程池中移除某个线程
 		final ThreadTask threadTask = threadQueue.remove();
 		threadTask.internalTask.stop();
-		this.activiteCount--;
+		this.activeCount--;
 	}
 
 	@Override
@@ -175,7 +175,7 @@ public class BasicThreadPool extends Thread implements ThreadPool {
 					break;
 				}
 				// 当前的队列中有任务尚未处理，并且activeCount < coreSize 则继续扩容
-				if (runnableQueue.size() > 0 && activiteCount < coreSize) {
+				if (runnableQueue.size() > 0 && activeCount < coreSize) {
 					for (int i = initSize; i < coreSize; i++) {
 						newThread();
 					}
@@ -183,14 +183,14 @@ public class BasicThreadPool extends Thread implements ThreadPool {
 					continue;
 				}
 				// 当前的队列任务中有任务尚未处理，并且activeCount < maxSize 则继续扩容
-				if (runnableQueue.size() > 0 && activiteCount < maxSize) {
+				if (runnableQueue.size() > 0 && activeCount < maxSize) {
 					for (int i = coreSize; i < maxSize; i++) {
 						newThread();
 					}
 				}
 				// 如果任务队列中没有任务，则需要回收，回收至coreSize即可
-				if (runnableQueue.size() == 0 && activiteCount > coreSize) {
-					for (int i = coreSize; i < activiteCount; i++) {
+				if (runnableQueue.size() == 0 && activeCount > coreSize) {
+					for (int i = coreSize; i < activeCount; i++) {
 						removeThread();
 					}
 				}
