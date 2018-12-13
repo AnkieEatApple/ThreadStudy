@@ -67,6 +67,15 @@ public class SoftLRUCache<K, V> {
 	}
 
 	public static void main(final String[] args) {
+//		final SoftLRUCache<Integer, Reference> cache = new SoftLRUCache<>(1000, new CacheLoader<Integer, Reference>() {
+//
+//			@Override
+//			public Reference load(Integer k) {
+//				return new Reference();
+//			}
+//			
+//		});
+
 		final SoftLRUCache<Integer, Reference> cache = new SoftLRUCache<>(1000, key -> new Reference());
 		System.out.println(cache);
 		for (int i = 0; i < Integer.MAX_VALUE; i++) {
