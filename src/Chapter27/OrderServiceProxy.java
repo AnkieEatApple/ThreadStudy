@@ -48,7 +48,7 @@ public class OrderServiceProxy implements OrderService {
 		final Map<String, Object> params = new HashMap<>();
 		params.put("account", account);
 		params.put("orderId", orderId);
-		final MethodMessage message = new OrderMessage(params, orderService);
+		final MethodMessage message = new TestMessage(params, orderService);
 		// activeMessageQueue.offer(message);
 	}
 }

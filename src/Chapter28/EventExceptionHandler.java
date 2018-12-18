@@ -1,0 +1,9 @@
+package Chapter28;
+
+import javax.naming.event.EventContext;
+
+public interface EventExceptionHandler {
+
+	//
+	void handle(Throwable cause, EventContext context);
+}
