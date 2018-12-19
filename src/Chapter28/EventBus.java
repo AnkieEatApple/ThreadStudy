@@ -1,6 +1,5 @@
 package Chapter28;
 
-import java.rmi.registry.Registry;
 import java.util.concurrent.Executor;
 
 /**
@@ -31,23 +30,23 @@ public class EventBus implements Bus {
 
 	// 无参构造
 	public EventBus() {
-		this(DEFAULT_BUS_NAME, null, Dispatcher.SEQ_EXECUTOR);
+		this(DEFAULT_BUS_NAME, null, Dispatcher.SEQ_EXECUTOR_SERVICE);
 	}
 
 	// 构造方法-名字
 	public EventBus(final String busName) {
-		this(busName, null, Dispatcher.SEQ_EXECUTOR);
+		this(busName, null, Dispatcher.SEQ_EXECUTOR_SERVICE);
 	}
 
 	// 构造方法-handler
 	public EventBus(final EventExceptionHandler exceptionHandler) {
-		this(DEFAULT_BUS_NAME, exceptionHandler, Dispatcher.SEQ_EXECUTOR);
+		this(DEFAULT_BUS_NAME, exceptionHandler, Dispatcher.SEQ_EXECUTOR_SERVICE);
 	}
 
 	// 构造方法-内部
 	EventBus(final String busName, final EventExceptionHandler exceptionHandler, final Executor executor) {
 		this.busName = busName;
-		this.dispatcher = dispatcher.newDispatcher(exceptionHandler, executor);
+		this.dispatcher = Dispatcher.newDispatcher(exceptionHandler, executor);
 	}
 
 	@Override
@@ -67,8 +66,8 @@ public class EventBus implements Bus {
 	}
 
 	@Override
-	public void post(final Object Evnet, final String topic) {
-		this.post(Evnet, topic);
+	public void post(final Object event, final String topic) {
+		this.dispatcher.dispatch(this, registry, event, topic);
 	}
 
 	@Override
@@ -80,5 +79,4 @@ public class EventBus implements Bus {
 	public String getBusName() {
 		return this.busName;
 	}
-
 }

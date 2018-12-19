@@ -2,8 +2,6 @@ package Chapter28;
 
 import java.util.concurrent.ThreadPoolExecutor;
 
-import org.w3c.dom.events.EventException;
-
 /**
  ********************************************************************** 
  * @Title: AsyncEventBus.java
@@ -21,13 +19,13 @@ public class AsyncEventBus extends EventBus {
 	}
 
 	// 构造方法-对外
-	public AsnycEventBus(final ThreadPoolExecutor executor) {
+	public AsyncEventBus(final ThreadPoolExecutor executor) {
 		this("default-async", null, executor);
 	}
 
 	// 构造方法-对外
 	public AsyncEventBus(final EventExceptionHandler exceptionHandler, final ThreadPoolExecutor executor) {
-		this("default-async", exceptionHandler, exceptionHandler);
+		this("default-async", exceptionHandler, executor);
 	}
 
 	// 构造方法-本地

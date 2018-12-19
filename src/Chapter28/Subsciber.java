@@ -14,10 +14,10 @@ import java.lang.reflect.Method;
  */
 public class Subsciber {
 
-	//
+	// 反射的类的对象
 	private final Object subscribeObject;
 
-	// 反射用的方法？
+	// 反射对象的方法
 	private final Method subscribeMethod;
 
 	//
