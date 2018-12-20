@@ -15,7 +15,7 @@ import java.util.concurrent.ExecutorService;
  **********************************************************************
  */
 public class Dispatcher {
-
+	// 线程池，这个线程池使用的是
 	private final Executor executorService;
 
 	private final EventExceptionHandler exceptionHandler;
@@ -29,9 +29,17 @@ public class Dispatcher {
 		this.exceptionHandler = exceptionHandler;
 	}
 
+	/**
+	 * 
+	 * @param bus
+	 * @param registry
+	 * @param event
+	 * @param topic
+	 */
 	public void dispatch(final Bus bus, final Registry registry, final Object event, final String topic) {
-		// 根据topic获取所有的Subscriber列表
+		// 根据topic获取所有的Subscriber列表，topic为Registry中的key
 		final ConcurrentLinkedQueue<Subsciber> subscibers = registry.scanSubscriber(topic);
+		// 当此时获取回来的队列中没有值的话的操作，然后return
 		if (null == subscibers) {
 			if (exceptionHandler != null) {
 				exceptionHandler.handle(new IllegalArgumentException("The topic " + topic + " not bind yet"),
@@ -39,7 +47,7 @@ public class Dispatcher {
 			}
 			return;
 		}
-		// 遍历所有的方法，并且通过反射的方式进行方法调用
+		// 遍历所有的方法，并且通过反射的方式进行方法调用，stream.filter的用法筛选
 		subscibers.stream().filter(subsciber -> !subsciber.isDisable()).filter(subsciber -> {
 			final Method subscribeMethod = subsciber.getSubscribeMethod();
 			final Class<?> aClass = subscribeMethod.getParameterTypes()[0];
