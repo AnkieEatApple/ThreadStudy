@@ -22,7 +22,7 @@ public class Registry {
 	// 储存Subscriber集合和topic之间的关系的map
 	private final ConcurrentHashMap<String, ConcurrentLinkedQueue<Subsciber>> subscriberContainer = new ConcurrentHashMap<>();
 
-	// 绑定操作
+	// 绑定操作，subscribe这个是类的引用，同一个类new出来的不同的对象引用
 	public void bind(final Object subscriber) {
 		// 获取 Subscriber Object的方法集合然后进行绑定，这里将传进来的class类中的@Subscribe的方法都整理到List中
 		final List<Method> subscribeMethods = getSubscribeMethods(subscriber);
@@ -54,6 +54,9 @@ public class Registry {
 		// 当某个topic没有subscriber Queue的时候创建一个，这个操作就骚的很，java8的新特性，这个就不用写if了
 		subscriberContainer.computeIfAbsent(topic, key -> new ConcurrentLinkedQueue<>());
 		// 创建一个Subscriber 并且加入到Subscriber列表中，Subscriber这个对象为new出来的，并且保存的是class类和对应的方法
+		// **Map里面存储的是不同类new出来的对象的引用出来对应的类的筛选出来的方法**
+		// **封装的是对应的一个类new出来的对象、一个类中反射出来的方法，封装成Subscriber的对象，存在queue中**
+		// **调用过的时候，通过topic获取队列，按照对象调用方法，挨个执行
 		subscriberContainer.get(topic).add(new Subsciber(subscriber, method));
 	}
 
