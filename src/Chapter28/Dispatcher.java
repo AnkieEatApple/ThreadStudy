@@ -57,11 +57,13 @@ public class Dispatcher {
 
 	// 循环执行了这个方法，subscriber是提取出来的封装的对象，event是需要发送给订阅者的字符串，bus是上下文，上文中的EventBus线程
 	private void realInvokeSubscribe(final Subsciber subsciber, final Object event, final Bus bus) {
-		// 根据subscriber获取方法？
+		// 在封装类中subscriber获取方法
 		final Method subscribeMethod = subsciber.getSubscribeMethod();
-		// 根据subscriber获取对象？
+		// 在封装类中subscriber获取对象
 		final Object subscribeObject = subsciber.getSubscribeObject();
-		// 执行服务
+		// 执行服务，运行excute的括号中的方法体，直接调用run方法，
+		// 这个executerService就看初始化EventBus的时候用的是什么类型的
+		// 线程池了，异步EventBus使用的是newFixThreadPool(10)
 		executorService.execute(() -> {
 			try {
 				// 这里是真正调用的反射中的方法，方法名调用了invoke，传入的是new的对象和参数
@@ -93,7 +95,7 @@ public class Dispatcher {
 	}
 
 	// 工厂类
-	static Dispatcher perThreadDispatcher(final EventExceptionHandler exceptionHandler) {
+	static Dispatcher preThreadDispatcher(final EventExceptionHandler exceptionHandler) {
 		return new Dispatcher(PRE_THREAD_EXECUTOR_SERVICE, exceptionHandler);
 	}
 
@@ -136,19 +138,19 @@ public class Dispatcher {
 			return this.eventBusName;
 		}
 
-		// 获取订阅者
+		// 获取封装类中的对象引用
 		@Override
 		public Object getSubscriber() {
 			return subsciber != null ? subsciber.getSubscribeObject() : null;
 		}
 
-		// 获取订阅的方法？
+		// 获取封装类中的方法
 		@Override
 		public Method getSubscribe() {
 			return subsciber != null ? subsciber.getSubscribeMethod() : null;
 		}
 
-		// 获取事件？
+		// 获取发送的消息体
 		@Override
 		public Object getEvent() {
 			return this.event;

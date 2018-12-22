@@ -19,6 +19,8 @@ public class EventBusTest {
 		try {
 			final Class<?> aClass = Class.forName("Chapter28.SimpleSubscriber1");
 			final Method method = aClass.getDeclaredMethod("method1", String.class);
+			final Object object = aClass.newInstance();
+			method.invoke(object, "hello ankie");
 			final Class<?> as = method.getParameterTypes()[0];
 			System.out.println(as.isAssignableFrom(string.getClass()));
 		} catch (final Exception e) {

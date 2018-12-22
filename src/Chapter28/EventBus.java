@@ -13,7 +13,7 @@ import java.util.concurrent.Executor;
  */
 public class EventBus implements Bus {
 
-	// 用于维护Subscriber的注册表
+	// 用于维护Subscriber的注册表，一个Bus就只是维护了一个注册表
 	private final Registry registry = new Registry();
 
 	// Event Bus的名字
@@ -46,6 +46,7 @@ public class EventBus implements Bus {
 	// 构造方法-内部
 	EventBus(final String busName, final EventExceptionHandler exceptionHandler, final Executor executor) {
 		this.busName = busName;
+		// 在这里确定的分配器的具体模式，一个bus只维护了一个分配器
 		this.dispatcher = Dispatcher.newDispatcher(exceptionHandler, executor);
 	}
 
@@ -60,16 +61,20 @@ public class EventBus implements Bus {
 
 	}
 
+	// 发送post到默认的topic中，其中event默认 default-topic
 	@Override
 	public void post(final Object event) {
 		this.post(event, DEFAULT_TOPIC);
 	}
 
+	// 发送post到定义的topic中，这个是post的最终方法,会根据topic的注解选择，event是选择发送的事件
 	@Override
 	public void post(final Object event, final String topic) {
+		// registry是注册表，event是发送的字符串
 		this.dispatcher.dispatch(this, registry, event, topic);
 	}
 
+	//
 	@Override
 	public void close() {
 		this.dispatcher.close();

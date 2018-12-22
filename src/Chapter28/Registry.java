@@ -32,6 +32,8 @@ public class Registry {
 
 	// 解绑操作
 	public void unbind(final Object subscriber) {
+		// 解绑这里的操作并没有将topic对应的方法删除，而是直接将这个Subscriber封装类中的Disable置为true了
+		// 在post信息的时候，一看这个diasble不是false，直接就忽略了
 		subscriberContainer.forEach((key, queue) -> queue.forEach(s -> {
 			if (s.getSubscribeObject() == subscriber) {
 				s.setDisable(true);
@@ -57,6 +59,7 @@ public class Registry {
 		// **Map里面存储的是不同类new出来的对象的引用出来对应的类的筛选出来的方法**
 		// **封装的是对应的一个类new出来的对象、一个类中反射出来的方法，封装成Subscriber的对象，存在queue中**
 		// **调用过的时候，通过topic获取队列，按照对象调用方法，挨个执行
+		// **这里封装的订阅者的是传进来的 new方法对象的引用，因为该方法在invoke的时候需要传入这个 **对象** 和参数
 		subscriberContainer.get(topic).add(new Subsciber(subscriber, method));
 	}
 
@@ -72,10 +75,11 @@ public class Registry {
 			final Method[] declaredMethods = temp.getDeclaredMethods();
 			// 只有public方法 && 有一个入参 && 最重要的是被@Subscribe标记的方法才符合回调方法
 			Arrays.stream(declaredMethods).filter(m -> {
+				// m.getParameterCount() == 1表示被注解的方法，只是可以有一个参数，经测试，两个参数和没有参数的都不可以哦
+				// m.getModifiers() == Modifier.PUBLIC 表示被修饰的方法，只能是Public的，别的不行哦
+				// m.isAnnotationPresent(Subscribe.class) 表示的是注解是否为Subscribe.class定义的
 				if (m.isAnnotationPresent(Subscribe.class) && m.getParameterCount() == 1
 						&& m.getModifiers() == Modifier.PUBLIC) {
-					// m.getParameterCount() == 1表示被注解的方法，只是可以有一个参数，经测试，两个参数和没有参数的都不可以哦
-					// m.getModifiers() == Modifier.PUBLIC 表示被修饰的方法，只能是Public的，别的不行哦
 //					System.out.println(m.getAnnotation(Subscribe.class).topic());
 					return true;
 				}
