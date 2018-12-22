@@ -34,15 +34,15 @@
 15. Chapter15: [监控任务的生命周期](https://github.com/AnkieEatApple/ThreadStudy/tree/master/src/Chapter15)
 16. CHapter16: [Single Thread Execution设计模式](https://github.com/AnkieEatApple/ThreadStudy/tree/master/src/Chapter16)
 17. Chapter17: [读写锁分离设计模式](https://github.com/AnkieEatApple/ThreadStudy/tree/master/src/Chapter17)
-18. Chapter18: 不可变对象设计模式
-19. Chapter19: Future设计模式
-20. Chapter20: Guarded Suspension设计
-21. Chapter21: 线程上下文设计模式
-22. Chapter22: Balking设计模式
-23. Chapter23: Latch设计模式
-24. Chapter24: Thread-Per-Message设计模式
-25. Chapter25: Two Phase Termination设计模式
-26. Chapter26: Worker-Thread设计模式
-27. Chapter27: Active Object设计模式
-28. Chapter28: Event Bus设计模式
-29. Chapter29: Event Driven设计模式
+18. Chapter18: [不可变对象设计模式](https://github.com/AnkieEatApple/ThreadStudy/tree/master/src/Chapter18)
+19. Chapter19: [Future设计模式](https://github.com/AnkieEatApple/ThreadStudy/tree/master/src/Chapter19)
+20. Chapter20: [Guarded Suspension设计](https://github.com/AnkieEatApple/ThreadStudy/tree/master/src/Chapter20)
+21. Chapter21: [线程上下文设计模式](https://github.com/AnkieEatApple/ThreadStudy/tree/master/src/Chapter21)
+22. Chapter22: [Balking设计模式](https://github.com/AnkieEatApple/ThreadStudy/tree/master/src/Chapter22)
+23. Chapter23: [Latch设计模式](https://github.com/AnkieEatApple/ThreadStudy/tree/master/src/Chapter23)
+24. Chapter24: [Thread-Per-Message设计模式](https://github.com/AnkieEatApple/ThreadStudy/tree/master/src/Chapter24)
+25. Chapter25: [Two Phase Termination设计模式](https://github.com/AnkieEatApple/ThreadStudy/tree/master/src/Chapter25)
+26. Chapter26: [Worker-Thread设计模式](https://github.com/AnkieEatApple/ThreadStudy/tree/master/src/Chapter26)
+27. Chapter27: [Active Object设计模式](https://github.com/AnkieEatApple/ThreadStudy/tree/master/src/Chapter27)
+28. Chapter28: [Event Bus设计模式](https://github.com/AnkieEatApple/ThreadStudy/tree/master/src/Chapter28)
+29. Chapter29: [Event Driven设计模式](https://github.com/AnkieEatApple/ThreadStudy/tree/master/src/Chapter29)
